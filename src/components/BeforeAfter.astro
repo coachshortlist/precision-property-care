@@ -1,0 +1,11 @@
+---
+import { art } from '../lib/art.js';
+const { kind, seed = 7, class: cls = '' } = Astro.props;
+---
+<div class={`ba ${cls}`} data-ba style="--pos:50%">
+  <div class="before" set:html={art(kind, 'before', seed)} />
+  <div class="after" set:html={art(kind, 'after', seed)} />
+  <span class="tag l">Before</span><span class="tag r">After</span>
+  <input type="range" min="0" max="100" value="50" aria-label="Slide to compare before and after">
+  <div class="handle"></div>
+</div>

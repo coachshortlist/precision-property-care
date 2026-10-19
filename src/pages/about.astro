@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Reviews from '../components/Reviews.astro';
+import WaBand from '../components/WaBand.astro';
+import { PROJECTS, CONTACT } from '../data/site.js';
+---
+<Base title="About us" description="Precision Property Care is a Glasgow team covering heating, kitchens, bathrooms, electrics, plumbing, flooring, gardens, driveways and exterior cleaning.">
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>About us</span></nav>
+      <h1>About Precision Property Care</h1>
+      <p>A Glasgow team looking after homes inside and out.</p>
+    </div>
+  </section>
+  <section class="sec story">
+    <div class="wrap">
+      <div>
+        <h2>One team for the whole property</h2>
+        <p>Most homeowners end up juggling a plumber, an electrician, a joiner and a landscaper, each with their own diary and their own excuses. We set up Precision Property Care so you only need one number.</p>
+        <p>Our team covers heating, kitchens, bathrooms, electrics, plumbing and flooring, as well as gardens, driveways and exterior cleaning. We price every job ourselves, we're on site every day, and we don't leave until it's right.</p>
+        <a class="btn" href="/contact/">Get in touch</a>
+      </div>
+      <div class="team-ph"><div><img src="/images/logo.webp" alt="" loading="lazy"><br>Team photo goes here</div></div>
+    </div>
+  </section>
+  <section class="sec tint">
+    <div class="wrap">
+      <div class="sec-head"><div><h2>Our promise to you</h2></div></div>
+      <div class="facts4">
+        <div class="fact"><span class="ibox"><Icon name="reliable" /></span><b>Fully insured</b><span>Public liability cover on every job</span></div>
+        <div class="fact"><span class="ibox"><Icon name="doc" /></span><b>Written guarantees</b><span>Workmanship guaranteed in writing</span></div>
+        <div class="fact"><span class="ibox"><Icon name="boilers" /></span><b>Gas Safe registered</b><span>For all boiler and gas work</span></div>
+        <div class="fact"><span class="ibox"><Icon name="electrical" /></span><b>Certified electrics</b><span>Tested and certified on completion</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><div><h2>What our customers say</h2></div>{CONTACT.googleReviews && <a class="btn line small" target="_blank" rel="noopener" href={CONTACT.googleReviews}>Read our reviews on Google</a>}</div>
+      <Reviews list={[PROJECTS[3], PROJECTS[4], PROJECTS[5]]} />
+    </div>
+  </section>
+  <WaBand />
+</Base>

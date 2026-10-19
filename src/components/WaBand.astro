@@ -1,0 +1,10 @@
+---
+import Icon from './Icon.astro';
+import { WA_LINK, CONTACT } from '../data/site.js';
+---
+<section class="wa-band">
+  <div class="wrap">
+    <div><h2>Got a question? Just message us.</h2><p>Send us a photo of the job and we'll get back to you quickly.</p></div>
+    <div class="btns"><a class="btn wa" target="_blank" rel="noopener" data-track="wa_click" href={WA_LINK}><Icon name="chat" />Contact us on WhatsApp</a><span class="tel">or call <a href={`tel:${CONTACT.tel}`} data-track="phone_click" style="color:inherit">{CONTACT.phone}</a></span></div>
+  </div>
+</section>

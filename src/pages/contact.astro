@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { CONTACT, WA_LINK } from '../data/site.js';
+---
+<Base title="Contact us" description="Send Precision Property Care your job with a few photos, or message us on WhatsApp. We usually reply within one working day.">
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>Contact</span></nav>
+      <h1>Contact us</h1>
+      <p>Send us your job with a few photos, or message us on WhatsApp. We usually reply within one working day.</p>
+    </div>
+  </section>
+  <section class="sec contact">
+    <div class="wrap">
+      <div class="form-card">
+        <h2>Tell us about your job</h2>
+        <p>Send a few photos and some details and we'll come back with a price.</p>
+        <form id="sendForm" novalidate>
+          <div class="fgrid">
+            <div class="field"><label for="sName">Name</label><input id="sName" autocomplete="name"><span class="err"></span></div>
+            <div class="field"><label for="sMob">Mobile</label><input id="sMob" type="tel" inputmode="tel" autocomplete="tel"><span class="err"></span></div>
+            <div class="field"><label for="sEmail">Email</label><input id="sEmail" type="email" autocomplete="email"><span class="err"></span></div>
+            <div class="field"><label for="sPc">Postcode</label><input id="sPc" autocomplete="postal-code"><span class="err"></span></div>
+            <div class="field"><label for="sType">Type of work</label><select id="sType"><option value="">Choose one</option></select><span class="err"></span></div>
+            <div class="field"><label for="sSize">Approximate size</label><input id="sSize" placeholder="e.g. 30 m², or one bathroom"><span class="err"></span></div>
+            <div class="field"><label for="sBudget">Budget</label><select id="sBudget"><option value="">Choose one</option><option>Under £1,000</option><option>£1,000 to £3,000</option><option>£3,000 to £7,500</option><option>£7,500 to £15,000</option><option>Over £15,000</option><option>Not sure yet</option></select><span class="err"></span></div>
+            <div class="field"><label for="sWhen">When would you like it done?</label><select id="sWhen"><option value="">Choose one</option><option>As soon as possible</option><option>In the next 1 to 3 months</option><option>In 3 to 6 months</option><option>Just planning for now</option></select><span class="err"></span></div>
+            <div class="field full"><label class="upload" for="sPhotos"><input id="sPhotos" type="file" accept="image/*" multiple><span class="up-ic"><Icon name="camera" /></span><span><b>Add photos of the job</b><span class="hint">A few photos from different angles work best. Up to 10.</span></span></label><div class="thumbs" id="sThumbs"></div></div>
+            <div class="field full" style="margin-top:12px"><label for="sNotes">Anything else we should know? (optional)</label><textarea id="sNotes"></textarea></div>
+          </div>
+          <div class="hp" aria-hidden="true"><label>Company<input id="sCo" tabindex="-1" autocomplete="off"></label></div>
+          <p class="consent">We'll only use your details to reply about your job. We never pass them on. See our <a href="/privacy/">privacy policy</a>.</p>
+          <button class="btn" type="submit" id="sSubmit">Send enquiry</button>
+          <p id="sMsg" class="form-msg" role="status"></p>
+        </form>
+      </div>
+      <aside class="chat-box">
+        <h3>Prefer to chat?</h3>
+        <p>Message us on WhatsApp or social media and we'll get back to you quickly.</p>
+        <div class="chat-btns">
+          <a class="btn wa" target="_blank" rel="noopener" data-track="wa_click" href={WA_LINK}><Icon name="chat" />Contact us on WhatsApp</a>
+          {CONTACT.instagram && <a class="btn line" target="_blank" rel="noopener" data-track="msg_click" href={CONTACT.instagram}>Message us on Instagram</a>}
+          {CONTACT.facebook && <a class="btn line" target="_blank" rel="noopener" data-track="msg_click" href={CONTACT.facebook}>Message us on Facebook</a>}
+        </div>
+        <dl>
+          <div><dt>Phone</dt><dd><a href={`tel:${CONTACT.tel}`} data-track="phone_click" style="color:inherit">{CONTACT.phone}</a></dd></div>
+          <div><dt>Opening hours</dt><dd>{CONTACT.hours}</dd></div>
+          <div><dt>Areas we cover</dt><dd>{CONTACT.areas}</dd></div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+  <script>
+    import { initContact } from '../scripts/contact.js';
+    initContact();
+  </script>
+</Base>

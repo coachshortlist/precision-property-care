@@ -1,0 +1,12 @@
+import { SERVICES, OTHER } from '../data/site.js';
+export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export const gbp = n => '£' + Math.round(n).toLocaleString('en-GB');
+export const nice = n => n < 1000 ? Math.round(n / 10) * 10 : Math.round(n / 100) * 100;
+export const labelOf = k => SERVICES[k]?.label || OTHER[k] || k;
+export const keysIn = g => Object.keys(SERVICES).filter(k => SERVICES[k].group === g);
+export const fromText = k => { const p = SERVICES[k]; if(p.noEst) return 'Priced from photos';
+  if(p.choices) return 'From ' + gbp(Math.min(...Object.values(p.choices).map(c => c[1])));
+  return 'From ' + gbp(p.low) + ' per ' + p.unit; };
+export const validMobile = v => /^(?:\+44|0044|0)7\d{9}$/.test(String(v).replace(/[\s()-]/g, ''));
+export const validEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(v).trim());
+export const validPc = v => /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i.test(String(v).trim());

@@ -1,0 +1,77 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Reviews from '../components/Reviews.astro';
+import WaBand from '../components/WaBand.astro';
+import Estimator from '../components/Estimator.astro';
+import { SERVICES, PROJECTS, WA_LINK, serviceUrl } from '../data/site.js';
+import { keysIn } from '../lib/util.js';
+---
+<Base description="Boilers, kitchens, bathrooms, electrics, plumbing, flooring, landscaping, driveways and power washing across Glasgow. See guide prices online and get a free quote.">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Expert Maintenance for Every Corner of Your Property.</h1>
+        <p class="intro-text">Boilers, kitchens, bathrooms, electrics, plumbing and flooring, through to landscaping, driveways and power washing. One trusted team for your whole home across Glasgow.</p>
+        <div class="ctas">
+          <a class="btn" href="#quote">Free quote</a>
+          <a class="btn line" target="_blank" rel="noopener" data-track="wa_click" href={WA_LINK}><Icon name="chat" />Contact us on WhatsApp</a>
+        </div>
+        <ul class="ticks">
+          <li><Icon name="check" />Free surveys</li>
+          <li><Icon name="check" />Written, fixed quotes</li>
+          <li><Icon name="check" />Fully insured</li>
+        </ul>
+      </div>
+      <div class="hero-media">
+        <BeforeAfter kind="kitchens" seed={7} />
+        <div class="hero-cap"><span>Kitchen supply and fit, Bearsden</span><b>£9,800</b></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><div><h2>Everything your property needs</h2><p>Pick a service to see what's included and what it costs.</p></div></div>
+      <div class="split2">
+        <div class="svc-links"><h3><Icon name="home" />Inside your home</h3><ul>
+          {keysIn('inside').map(k => <li><a href={serviceUrl(k)}><Icon name={k} /><span>{SERVICES[k].label}</span></a></li>)}
+        </ul></div>
+        <div class="svc-links"><h3><Icon name="tree" />Outside your home</h3><ul>
+          {[...keysIn('outside'), 'repairs'].map(k => <li><a href={serviceUrl(k)}><Icon name={k} /><span>{SERVICES[k].label}</span></a></li>)}
+        </ul></div>
+      </div>
+      <div class="all-link"><a class="btn line" href="/services/">View all services</a></div>
+    </div>
+  </section>
+
+  <section class="sec tint" id="quote">
+    <div class="wrap">
+      <div class="sec-head"><div><h2>Start Your Property Upgrade Here</h2><p>Register your interest and see a rough price in about a minute. No obligation, and we'll come back to you within one working day.</p></div></div>
+      <Estimator />
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><div><h2>Recent work</h2><p>Drag the slider on any job to compare before and after.</p></div><a class="btn line small" href="/our-work/">See all our work</a></div>
+      <div class="projects">{[PROJECTS[0], PROJECTS[2], PROJECTS[1]].map(p => <ProjectCard p={p} />)}</div>
+    </div>
+  </section>
+
+  <section class="sec tint home-why">
+    <div class="wrap">
+      <div class="sec-head"><div><h2>Why people choose us</h2></div></div>
+      <div class="promise"><div class="grid3">
+        <div class="pbox"><span class="ibox"><Icon name="fast" /></span><h3>Fast</h3><p>We reply within one working day and give you a start date before you commit.</p></div>
+        <div class="pbox"><span class="ibox"><Icon name="reliable" /></span><h3>Reliable</h3><p>A written quote, a fixed price and a team that turns up when we say we will.</p></div>
+        <div class="pbox"><span class="ibox"><Icon name="affordable" /></span><h3>Affordable</h3><p>Free surveys, no call-out fee, and you can see a price before you even call.</p></div>
+      </div></div>
+      <Reviews list={[PROJECTS[0], PROJECTS[1], PROJECTS[2]]} />
+    </div>
+  </section>
+
+  <WaBand />
+</Base>

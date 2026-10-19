@@ -1,0 +1,97 @@
+---
+import '../styles/global.css';
+import Icon from '../components/Icon.astro';
+import { CONTACT, SERVICES, SITE, WA_LINK, serviceUrl } from '../data/site.js';
+import { keysIn } from '../lib/util.js';
+
+interface Props { title?: string; description: string; quoteHref?: string; noindex?: boolean }
+const { title, description, quoteHref = '/#quote', noindex = false } = Astro.props;
+const fullTitle = title ? `${title} | ${SITE.name}` : `${SITE.name} | Property maintenance in ${SITE.town}`;
+const path = Astro.url.pathname;
+const canonical = new URL(path, Astro.site).href;
+const nav = [['/', 'Home'], ['/services/', 'Services'], ['/our-work/', 'Our work'], ['/about/', 'About us'], ['/contact/', 'Contact']];
+const isCurrent = (href) => href === '/' ? path === '/' : path.startsWith(href);
+const sameAs = [CONTACT.instagram, CONTACT.facebook].filter(Boolean);
+const business = {
+  '@context': 'https://schema.org', '@type': 'HomeAndConstructionBusiness', name: SITE.name, url: new URL('/', Astro.site).href,
+  telephone: CONTACT.tel, email: CONTACT.email, areaServed: CONTACT.areas, image: new URL('/images/logo.png', Astro.site).href,
+  ...(sameAs.length ? { sameAs } : {})
+};
+---
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>{fullTitle}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonical}>
+  {noindex && <meta name="robots" content="noindex,nofollow">}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content={fullTitle}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={canonical}>
+  <meta property="og:image" content={new URL('/images/logo.png', Astro.site).href}>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <script type="application/ld+json" set:html={JSON.stringify(business)} />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="topbar">
+    <div class="wrap">
+      <ul>
+        <li><Icon name="check" />Fully insured</li>
+        <li><Icon name="check" />Free, no-obligation quotes</li>
+        <li><Icon name="pin" />Glasgow and surrounding areas</li>
+      </ul>
+      <span>Call or WhatsApp <a href={`tel:${CONTACT.tel}`} data-track="phone_click"><b>{CONTACT.phone}</b></a></span>
+    </div>
+  </div>
+
+  <header class="site">
+    <div class="wrap">
+      <a href="/" aria-label={`${SITE.name} home`}><img class="logo-img" src="/images/logo.webp" alt={SITE.name} width="101" height="74"></a>
+      <nav class="main" id="mainNav" aria-label="Main">
+        {nav.map(([href, label]) => <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>{label}</a>)}
+      </nav>
+      <a class="btn" href={quoteHref} data-track="cta_header">Free quote</a>
+      <button class="menu-btn" id="menuBtn" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="Menu"><Icon name="menu" /></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <slot />
+  </main>
+
+  <footer class="site">
+    <div class="wrap">
+      <div class="cols">
+        <div><img class="logo-img" src="/images/logo.webp" alt={SITE.name} loading="lazy"><p>Property care and maintenance, inside and out, across Glasgow. Fast, reliable, affordable.</p></div>
+        <div><h3>Inside your home</h3><ul>{keysIn('inside').map(k => <li><a href={serviceUrl(k)}>{SERVICES[k].label}</a></li>)}</ul></div>
+        <div><h3>Outside your home</h3><ul>{keysIn('outside').map(k => <li><a href={serviceUrl(k)}>{SERVICES[k].label}</a></li>)}<li><a href={serviceUrl('repairs')}>Repairs</a></li></ul></div>
+        <div><h3>Company</h3><ul>
+          <li><a href="/about/">About us</a></li><li><a href="/our-work/">Our work</a></li><li><a href="/services/">All services</a></li><li><a href="/contact/">Contact</a></li>
+          <li><a href={`tel:${CONTACT.tel}`} data-track="phone_click"><b>{CONTACT.phone}</b></a></li>
+          <li><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></li>
+        </ul></div>
+      </div>
+      <div class="legal"><span>© {new Date().getFullYear()} {SITE.name}. Fully insured.</span><span><a href="/privacy/">Privacy policy</a></span></div>
+    </div>
+  </footer>
+
+  <div class="mbar">
+    <a class="btn line" data-track="phone_click" href={`tel:${CONTACT.tel}`}>Call</a>
+    <a class="btn wa" target="_blank" rel="noopener" data-track="wa_click" href={WA_LINK}>WhatsApp</a>
+    <a class="btn" href={quoteHref} data-track="cta_mobile">Free quote</a>
+  </div>
+
+  <script>
+    import { initSite } from '../scripts/site.js';
+    initSite();
+  </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import BeforeAfter from '../../components/BeforeAfter.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Estimator from '../../components/Estimator.astro';
+import { SERVICES, SLUGS, PROJECTS, WA_LINK, serviceUrl, serviceMeta } from '../../data/site.js';
+import { gbp } from '../../lib/util.js';
+
+export function getStaticPaths(){
+  return Object.entries(SLUGS).map(([key, slug]) => ({ params:{ slug }, props:{ key } }));
+}
+const { key } = Astro.props;
+const s = SERVICES[key];
+const related = PROJECTS.filter(p => p.kind === key);
+const others = Object.keys(SERVICES).filter(x => x !== key);
+const guide = s.noEst ? [['Small jobs', 'Priced from photos'], ['Several jobs together', 'One combined price']]
+  : s.choices ? Object.values(s.choices).map(c => [c[0], `${gbp(c[1])} to ${gbp(c[2])}`])
+  : [[`Per ${s.unit}`, `${gbp(s.low)} to ${gbp(s.high)}`], ['Smallest job', `From ${gbp(s.min)}`]];
+const repairJobs = ['Doors, locks and handles', 'Gates and fence repairs', 'Sealant and grouting', 'Shelving and curtain poles', 'Steps and paths', 'Leaks and drips'];
+const quoteHref = s.noEst ? '/contact/?type=repairs' : '#quote';
+---
+<Base title={s.label} description={serviceMeta(key)} quoteHref={quoteHref}>
+  <section class="page-hero svc-hero"><div class="wrap">
+    <div>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><a href="/services/">Services</a><span aria-hidden="true">/</span><span>{s.label}</span></nav>
+      <h1>{s.label}</h1>
+      <p>{s.intro}</p>
+      <div class="ctas">
+        {s.noEst ? <a class="btn" href="/contact/?type=repairs">Send us your jobs</a> : <a class="btn" href="#quote">Free quote</a>}
+        <a class="btn line" target="_blank" rel="noopener" data-track="wa_click" href={WA_LINK}><Icon name="chat" />Contact us on WhatsApp</a>
+      </div>
+      <ul class="ticks"><li><Icon name="check" />Free survey</li><li><Icon name="check" />Written, fixed quotes</li><li><Icon name="check" />Fully insured</li></ul>
+    </div>
+    <div>
+      {s.noEst
+        ? <div class="hero-jobs"><b>Jobs we're often asked to do</b><ul>{repairJobs.map(j => <li><Icon name="check" /><span>{j}</span></li>)}</ul><p class="hint">Send us your list with a few photos and we'll price it all together.</p></div>
+        : <BeforeAfter kind={key} seed={11} />}
+    </div>
+  </div></section>
+
+  {!s.noEst && (
+    <section class="sec tint" id="quote"><div class="wrap">
+      <div class="sec-head"><div><h2>Free quote for {s.label.toLowerCase()}</h2><p>Answer a couple of questions to see a rough price straight away. No obligation.</p></div></div>
+      <Estimator start={key} />
+    </div></section>
+  )}
+
+  <section class="sec svc-body"><div class="wrap">
+    <div>
+      <h2>What's included</h2>
+      <ul class="incl">{s.includes.map(i => <li><Icon name="check" /><span>{i}</span></li>)}</ul>
+      <h2>Common questions</h2>
+      <div class="faq">{s.faqs.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</div>
+    </div>
+    <aside class="pguide"><h3>Price guide</h3>
+      <table><tbody>{guide.map(([a, b]) => <tr><td>{a}</td><td class="num">{b}</td></tr>)}</tbody></table>
+      <p class="hint">Rough guide prices from recent jobs. Your fixed price is confirmed in writing after a free survey.</p>
+      <a class="btn wa" target="_blank" rel="noopener" data-track="wa_click" href={WA_LINK}><Icon name="chat" />Contact us on WhatsApp</a>
+    </aside>
+  </div></section>
+
+  {related.length > 0 && (
+    <section class="sec tint"><div class="wrap">
+      <div class="sec-head"><div><h2>Recent {s.label.toLowerCase()} jobs</h2></div><a class="btn line small" href="/our-work/">See all our work</a></div>
+      <div class="projects">{related.map(p => <ProjectCard p={p} />)}</div>
+    </div></section>
+  )}
+
+  <section class={`sec ${related.length ? '' : 'tint'}`}><div class="wrap">
+    <h2>Other services</h2>
+    <div class="other-svcs">{others.map(x => <a class="chip" href={serviceUrl(x)}>{SERVICES[x].label}</a>)}</div>
+  </div></section>
+</Base>

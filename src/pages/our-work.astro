@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { PROJECTS } from '../data/site.js';
+---
+<Base title="Our work" description="Recent kitchens, bathrooms, boilers, flooring, patios, driveways and garden makeovers across Glasgow, with what each job cost.">
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>Our work</span></nav>
+      <h1>Our work</h1>
+      <p>Recent jobs with what they cost, so you know what to expect. Drag the slider on any job to compare before and after.</p>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      <div class="chips" id="workChips" role="group" aria-label="Filter jobs" style="margin-bottom:28px">
+        <button type="button" class="chip" data-wf="all" aria-pressed="true">All work</button>
+        <button type="button" class="chip" data-wf="inside" aria-pressed="false">Inside the home</button>
+        <button type="button" class="chip" data-wf="outside" aria-pressed="false">Outside the home</button>
+      </div>
+      <div class="projects" id="workGrid">{PROJECTS.map(p => <ProjectCard p={p} />)}</div>
+    </div>
+  </section>
+  <script>
+    document.getElementById('workChips').addEventListener('click', e => {
+      const b = e.target.closest('[data-wf]'); if(!b) return;
+      document.querySelectorAll('#workChips .chip').forEach(c => c.setAttribute('aria-pressed', String(c === b)));
+      document.querySelectorAll('#workGrid .proj').forEach(p => { p.hidden = b.dataset.wf !== 'all' && p.dataset.group !== b.dataset.wf; });
+    });
+  </script>
+</Base>

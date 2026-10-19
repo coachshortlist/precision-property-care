@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import { CONTACT } from '../data/site.js';
+---
+<Base title="Privacy policy" description="How Precision Property Care uses the details you give us.">
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>Privacy policy</span></nav>
+      <h1>Privacy policy</h1>
+      <p>How Precision Property Care uses the details you give us.</p>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap legal-text">
+      <p class="draft-note">Draft template. Check every section against how the business actually works, add the missing details, and have it reviewed before going live.</p>
+      <h2>Who we are</h2>
+      <p>Precision Property Care, <span class="ph">registered business name and address</span>. You can contact us about your data at <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>.</p>
+      <h2>What we collect</h2>
+      <p>When you use our price estimator, send us your job or message us, we collect your name, mobile number, email address, postcode, details of the work you need, and any photos you send. We also record which page or advert brought you to our website.</p>
+      <h2>Why we use it</h2>
+      <p>To reply to your enquiry, give you a price, arrange a survey and carry out the work. We rely on the steps needed before entering a contract with you, and our legitimate interest in responding to enquiries and understanding which of our marketing works.</p>
+      <h2>Who we share it with</h2>
+      <p>We never sell your details. We use trusted providers to run our website, store enquiries and send emails: <span class="ph">Netlify (website hosting), Supabase (enquiry storage) and your email provider</span>.</p>
+      <h2>How long we keep it</h2>
+      <p>If you don't go ahead, we delete your details after <span class="ph">for example 12 months</span>. If you become a customer, we keep job records for as long as we need them for guarantees, accounts and legal reasons.</p>
+      <h2>Cookies and analytics</h2>
+      <p>We use our own simple visit counter to see how many people visit and which pages or adverts brought them here. It doesn't use cookies or track you across other websites. While you browse, we keep a note in your browser of how you arrived, which is cleared when you close the tab.</p>
+      <h2>Your rights</h2>
+      <p>You can ask to see the details we hold about you, correct them, or have them deleted. Email <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a> and we'll respond within one month. If you're unhappy with how we handle your data, you can complain to the Information Commissioner's Office at <a href="https://ico.org.uk/make-a-complaint/" target="_blank" rel="noopener">ico.org.uk</a>.</p>
+    </div>
+  </section>
+
+</Base>

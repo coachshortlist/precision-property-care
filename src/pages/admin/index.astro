@@ -1,0 +1,91 @@
+---
+import '../../styles/global.css';
+import Icon from '../../components/Icon.astro';
+---
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Leads | Precision Property Care</title>
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="admin">
+  <header class="admin-bar"><div class="wrap">
+    <a href="/" aria-label="Back to the website"><img src="/images/logo.webp" alt="Precision Property Care" height="52"></a>
+    <span class="admin-title">Lead dashboard</span>
+    <button class="btn line small" id="signOut" type="button" hidden>Sign out</button>
+  </div></header>
+
+  <main class="wrap admin-main">
+    <section id="vLoading" class="admin-card"><p>Loading...</p></section>
+
+    <section id="vSetup" class="admin-card" hidden>
+      <h1>Dashboard not connected yet</h1>
+      <p>Add <code>PUBLIC_SUPABASE_URL</code> and <code>PUBLIC_SUPABASE_ANON_KEY</code> in Netlify under Site configuration, Environment variables, then redeploy the site.</p>
+    </section>
+
+    <section id="vLogin" class="admin-card" hidden>
+      <h1>Sign in</h1>
+      <p>Enter your email and we'll send you a sign-in link. No password needed.</p>
+      <form id="loginForm" novalidate>
+        <div class="field"><label for="lEmail">Email</label><input id="lEmail" type="email" autocomplete="email"><span class="err"></span></div>
+        <button class="btn" type="submit" id="lBtn">Email me a sign-in link</button>
+        <p class="form-msg" id="lMsg" role="status"></p>
+      </form>
+    </section>
+
+    <section id="vNoAccess" class="admin-card" hidden>
+      <h1>This email can't open the dashboard</h1>
+      <p>You're signed in as <b id="naEmail"></b>, but that address isn't on the approved list. Add it to the <code>admins</code> table in Supabase, or sign out and use a different email.</p>
+    </section>
+
+    <section id="vDash" hidden>
+      <div class="d-head">
+        <div><h1>Leads</h1><span class="note" id="dUpdated"></span></div>
+        <div class="d-tools">
+          <label class="period">Showing <select id="period"><option value="30">Last 30 days</option><option value="90" selected>Last 90 days</option><option value="365">Last 12 months</option><option value="0">All time</option></select></label>
+          <button class="btn line small" id="refresh" type="button">Refresh</button>
+          <button class="btn small" id="addLeadBtn" type="button" aria-expanded="false">Add a lead</button>
+        </div>
+      </div>
+
+      <form class="panel add-lead" id="addLead" hidden novalidate>
+        <h2>Add a lead by hand</h2>
+        <p class="note">For enquiries that came by phone, WhatsApp, a Facebook message or word of mouth, so every job and its source is counted.</p>
+        <div class="fgrid">
+          <div class="field"><label for="aName">Name</label><input id="aName"><span class="err"></span></div>
+          <div class="field"><label for="aMob">Mobile</label><input id="aMob" type="tel"><span class="err"></span></div>
+          <div class="field"><label for="aEmail">Email (optional)</label><input id="aEmail" type="email"><span class="err"></span></div>
+          <div class="field"><label for="aPc">Postcode (optional)</label><input id="aPc"><span class="err"></span></div>
+          <div class="field"><label for="aSvc">Type of work</label><select id="aSvc"></select><span class="err"></span></div>
+          <div class="field"><label for="aSrc">How did they find you?</label><select id="aSrc"></select><span class="err"></span></div>
+          <div class="field"><label for="aVal">Estimated job value (£)</label><input id="aVal" type="number" min="0"><span class="err"></span></div>
+          <div class="field"><label for="aNotes">Notes (optional)</label><input id="aNotes"><span class="err"></span></div>
+        </div>
+        <div class="row-btns"><button type="button" class="link" id="addCancel">Cancel</button><button class="btn" type="submit" id="addSave">Save lead</button></div>
+        <p class="form-msg bad" id="addMsg" role="alert"></p>
+      </form>
+
+      <div class="kpis" id="kpis"></div>
+      <div class="panel"><h2>Where leads and jobs come from</h2><p class="note">Shows which marketing actually earns money. Revenue counts only leads marked Won, using the final job value where you've entered one.</p><div id="srcTable"></div></div>
+      <div class="panel"><h2>Leads by service</h2><div id="svcTable"></div></div>
+      <div class="panel">
+        <div class="panel-head"><h2 style="margin:0">All enquiries</h2><input class="search" id="search" type="search" placeholder="Search name, mobile or postcode" aria-label="Search leads"></div>
+        <div class="chips" id="stageChips" style="margin-bottom:12px"></div>
+        <div id="leadList"></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    import { initAdmin } from '../../scripts/admin.js';
+    initAdmin();
+  </script>
+</body>
+</html>

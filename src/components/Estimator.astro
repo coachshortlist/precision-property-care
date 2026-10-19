@@ -1,0 +1,19 @@
+---
+import Icon from './Icon.astro';
+// start: a service key to open at step 2 (used on service pages)
+const { start = '' } = Astro.props;
+---
+<div id="estBlock" data-start={start}>
+  <div class="est-top">
+    <div class="tabs" id="estTabs" role="tablist" aria-label="Type of job">
+      <button type="button" role="tab" data-tab="inside"><Icon name="home" />Inside the home</button>
+      <button type="button" role="tab" data-tab="outside"><Icon name="tree" />Outside</button>
+    </div>
+    <ol class="stepper" id="stepper" aria-label="Progress"></ol>
+  </div>
+  <div id="estCard" aria-live="polite"><noscript><p>Turn on JavaScript to use the price guide, or <a href="/contact/">send us your job</a>.</p></noscript></div>
+</div>
+<script>
+  import { initEstimator } from '../scripts/estimator.js';
+  initEstimator();
+</script>

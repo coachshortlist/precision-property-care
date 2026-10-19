@@ -1,0 +1,8 @@
+---
+const { list } = Astro.props;
+---
+<div class="reviews">
+  {list.map(p => (
+    <figure class="review"><div class="stars" aria-label="5 out of 5 stars">★★★★★</div><blockquote>“{p.q}”</blockquote><figcaption><b>{p.by}, {p.place}</b>{p.title}. Example review.</figcaption></figure>
+  ))}
+</div>

@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import { SERVICES, serviceUrl } from '../../data/site.js';
+import { keysIn, fromText } from '../../lib/util.js';
+import { art } from '../../lib/art.js';
+import { icon } from '../../lib/icons.js';
+const groups = [['inside', 'home', 'Inside your home', keysIn('inside')], ['outside', 'tree', 'Outside your home', [...keysIn('outside'), 'repairs']]];
+---
+<Base title="Our services" description="Everything your property needs, inside and out: boilers, kitchens, bathrooms, electrics, plumbing, flooring, patios, driveways, fencing, lawns, power washing and repairs across Glasgow.">
+  <section class="page-hero">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span>Services</span></nav>
+      <h1>Our services</h1>
+      <p>Everything your property needs, inside and out, from one team. Choose a service to see what's included, rough prices and recent jobs.</p>
+    </div>
+  </section>
+  <section class="sec">
+    <div class="wrap">
+      {groups.map(([g, ic, title, keys]) => (
+        <div class="grp">
+          <div class="grp-head"><span class="ibox"><Icon name={ic} /></span><h2>{title}</h2></div>
+          <div class="svc-cards">
+            {keys.map(k => (
+              <a class="svc-card" href={serviceUrl(k)}>
+                <span class="job-img" set:html={k === 'repairs' ? `<span class="ic">${icon('repairs')}</span>` : art(k, 'after', 9)} />
+                <span class="b"><span class="h"><Icon name={k} /><b>{SERVICES[k].label}</b></span><span class="d">{SERVICES[k].short}</span>
+                <span class="row"><span class="from">{fromText(k)}</span><span class="more">Find out more</span></span></span>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>

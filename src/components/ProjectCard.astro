@@ -1,0 +1,17 @@
+---
+import BeforeAfter from './BeforeAfter.astro';
+import { PROJECTS, SERVICES, serviceUrl } from '../data/site.js';
+import { gbp, labelOf } from '../lib/util.js';
+const { p } = Astro.props;
+const i = PROJECTS.indexOf(p);
+const similar = `${serviceUrl(p.kind)}?start=${encodeURIComponent(p.est)}#quote`;
+---
+<article class="proj" data-group={SERVICES[p.kind].group}>
+  <BeforeAfter kind={p.kind} seed={i + 2} />
+  <div class="pbody">
+    <div class="meta"><h3>{p.title}</h3><span class="val">{gbp(p.value)}</span></div>
+    <p class="sub">{p.place}, {p.size}. <a href={serviceUrl(p.kind)}>{labelOf(p.kind)}</a></p>
+    <blockquote>“{p.q}”<cite>{p.by}, example review</cite></blockquote>
+    <a class="link" href={similar} data-track="cta_similar" data-service={p.kind}>Free quote for something similar</a>
+  </div>
+</article>
